@@ -27,10 +27,33 @@ np[4] = (255,0,255)
 # send colors out to LEDs
 np.write()
 
-audio.play('/apps/python/NotMike/Rick.mp3', volume=128, loop=True)
 
 display.drawFill(display.BLACK)
 display.flush()
+Channel = None
+Playing = False
+import buttons
+
+def stop_btn(pressed):
+  global Channel
+  global Playing
+  if pressed:
+    if Playing:
+      audio.stop_channel(Channel)
+      Playing = False
+
+def start_btn(pressed):
+  global Channel
+  global Playing
+  if pressed:
+    if Playing:
+      audio.stop_channel(Channel)
+    Channel = audio.play('/apps/python/NotMike/Rick.mp3', volume=128)
+    Playing = True
+
+
+buttons.attach(buttons.BTN_A, start_btn)
+buttons.attach(buttons.BTN_B, stop_btn)
 
 COL=0
 while True:
