@@ -55,16 +55,37 @@ def start_btn(pressed):
 buttons.attach(buttons.BTN_A, start_btn)
 buttons.attach(buttons.BTN_B, stop_btn)
 
+Brightness = 16
+def home_btn(pressed):
+  global Brightness
+  if pressed:
+    if Brightness == 0:
+      Brightness = 1
+    elif Brightness >= 128:
+      Brightness = 255
+    else:
+      Brightness = Brightness << 1
+
+def menu_btn(pressed):
+  global Brightness
+  if pressed:
+    Brightness = Brightness >> 1
+
+buttons.attach(buttons.BTN_HOME, home_btn)
+buttons.attach(buttons.BTN_MENU, menu_btn)
+
+display.drawText(220, 140, ".co.uk", display.GREEN, "PermanentMarker22")
+
 COL=0
 while True:
   TextColours = [display.RED, display.GREEN, display.BLUE, display.WHITE]
-  LEDColours = [(128,0,0), (0,128,0), (0,0,128), (128,128,128)]
+  LEDColours = [(Brightness,0,0), (0,Brightness,0), (0,0,Brightness), (Brightness,Brightness,Brightness)]
   l = ["N", "o", "t", "M", " i", "k", "e"]
-  pos = 70
+  pos = 25
   for i in l:    
     COL = (COL + 1) % 4;
-    display.drawText(pos, 100, i, TextColours[COL], "PermanentMarker36")
-    pos += 25
+    display.drawText(pos, 90, i, TextColours[COL], "permanentmarker22", 2 ,2)
+    pos += 40
     display.flush()
     np[0] = np[1] = np[2] = np[3] = np[4] = LEDColours[COL]
     np.write()
